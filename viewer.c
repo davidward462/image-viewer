@@ -37,7 +37,7 @@ int main(int argc, char **argv)
     strcpy( filename, argv[1] );
 
 #ifdef DEBUG
-    printf("filename: %s\n", filename);
+    printf("opening file: %s\n", filename);
 #endif
     
 

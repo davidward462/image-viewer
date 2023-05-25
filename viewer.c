@@ -5,6 +5,8 @@
 #include <stdbool.h>
 #include <SDL2/SDL_image.h>
 
+#define DEBUG
+
 /*
  * Check number of arguments passed to the program.
  *
@@ -24,6 +26,20 @@ void CheckArgNum(int argc, int requiredArgs)
 
 int main(int argc, char **argv)
 {
-    CheckArgNum(argc, 1);
+#ifdef DEBUG
+    printf("debug mode\n");
+#endif
+
+    CheckArgNum(argc, 2);
+
+    char* filename;
+    filename = malloc( strlen( argv[1] ) + 1 );
+    strcpy( filename, argv[1] );
+
+#ifdef DEBUG
+    printf("filename: %s\n", filename);
+#endif
+    
+
     return 0;
 }

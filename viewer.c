@@ -1,6 +1,7 @@
 #include <stdio.h>
+#include <string.h>
 #include <SDL2/SDL.h>
-// #include <SDL2/SDL2_image.h> // issue here
+#include <SDL2/SDL_image.h>
 
 int main(int argc, char **argv)
 {

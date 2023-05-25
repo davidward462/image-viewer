@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <SDL2/SDL.h>
 #include <stdbool.h>
@@ -8,22 +9,21 @@
  * Check number of arguments passed to the program.
  *
  * @param requiredArgs: value of argc that we want. Must be greater that 0.
- * @return true if number of arguments met, false otherwise. 
+ * @return nothing. Exit with error if wrong number of args.
+ *
  */
-bool CheckArgumentNum(int requiredArgs)
+void CheckArgNum(int argc, int requiredArgs)
 {
-    bool result = false;
-
-    if(argc == requiredArgs)
+    if(argc != requiredArgs)
     {
-        result = true;
+        // an error occured
+        fprintf(stderr, "Incorrect number of arguments. Expected: %d\n", requiredArgs);
+        exit(1);
     }
-    
-    return result;
 }
 
 int main(int argc, char **argv)
 {
-    CheckArgumentNum(1)
+    CheckArgNum(argc, 1);
     return 0;
 }

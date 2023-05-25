@@ -34,6 +34,7 @@ void CheckArgNum(int argc, int requiredArgs)
  */
 char** Tokenize(char* string, int stringLen)
 {
+    // TODO: make this more efficient and flexible.
     const char* delim = ".";
     char** tokenList = malloc(stringLen * 2);
     tokenList[0] = strtok(string, delim);
@@ -75,7 +76,7 @@ int main(int argc, char **argv)
     // free memory
     free(filename);
     free(filenameCopy);
-    
+    free(tokenList);
 
     return 0;
 }

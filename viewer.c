@@ -16,7 +16,7 @@ void ShowError(char* msg);
 
 bool CreateWindow();
 
-bool Init();
+bool Init(char* filetype);
 
 bool LoadMedia();
 
@@ -32,7 +32,7 @@ char** Tokenize(char* string, int stringLen);
 // Global variables
 
 // The window that we render to
-SDL_Surface* gWindow = NULL;
+SDL_Window* gWindow = NULL;
 
 // The surface contained by the window
 SDL_Surface* gScreenSurface = NULL;
@@ -47,6 +47,10 @@ void ShowError(char* msg)
 
 bool CreateWindow()
 {
+#ifdef DEBUG
+    printf("run CreateWindow()\n");
+#endif
+
     bool success = true;
         // create window
         gWindow = SDL_CreateWindow("Image viewer", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
@@ -60,8 +64,12 @@ bool CreateWindow()
     return success;
 }
 
-bool Init()
+bool Init(char* filetype)
 {
+#ifdef DEBUG
+    printf("run Init(%s)\n", filetype);
+#endif
+
     bool success = true;
 
     // initialize SDL
@@ -74,8 +82,14 @@ bool Init()
     else // success
     {
         bool windowCreated = CreateWindow();
-    }
+        if( strcmp(filetype, "bmp") == 0)
+        {
+#ifdef DEBUG
+            printf("type is bmp\n");
+#endif
+        }
 
+    }
 
     return success;
 }
@@ -156,6 +170,9 @@ int main(int argc, char **argv)
     printf("filename: %s\n", tokenList[0]);
     printf("extension: %s\n", tokenList[1]);
 #endif
+
+
+    Init(tokenList[1]);
 
     // free memory
     free(filename);

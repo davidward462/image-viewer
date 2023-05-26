@@ -4,6 +4,7 @@
 #include <SDL2/SDL.h>
 #include <stdbool.h>
 #include <SDL2/SDL_image.h>
+#define DEBUG
 
 // Screen dimensions
 // Might be changable later
@@ -11,7 +12,9 @@ const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
 
 // Function prototypes
-bool Init()
+void ShowError(char* msg);
+
+bool Init();
 
 bool LoadMedia();
 
@@ -19,9 +22,9 @@ void CloseWindow();
 
 SDL_Surface* LoadSurface(char* path);
 
-void CheckArgNum(int argc, int requiredArgs)
+void CheckArgNum(int argc, int requiredArgs);
 
-char** Tokenize(char* string, int stringLen)
+char** Tokenize(char* string, int stringLen);
     
 
 // Global variables
@@ -35,7 +38,54 @@ SDL_Surface* gScreenSurface = NULL;
 // The current displayed PNG image
 SDL_Surface* gPNGSurface = NULL;
 
-#define DEBUG
+void ShowError(char* msg)
+{
+    fprintf(stderr, "%s. Error: %s\n", msg, SDL_GetError() );
+}
+
+bool Init()
+{
+    bool success = true;
+
+    // initialize SDL
+    if( SDL_Init( SDL_INIT_VIDEO ) < 0)
+    {
+        // error
+        ShowError("SDL failed to initialize");
+        success = false;
+    }
+    else
+    {
+        // create window
+        gWindow = SDL_CreateWindow("Image viewer", SDL_WINDOWPOS_UNDEFINED, SDLWINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+
+        if(gWindow == NULL)
+        {
+            // error
+            ShowError("Window could not be created");
+            success = false;
+        }
+        else
+        {
+
+        }
+
+    }
+
+
+    return success;
+}
+
+bool LoadMedia()
+{
+    bool success = false;
+    return success;
+}
+
+void CloseWindow()
+{
+    return;
+}
 
 /*
  * Check number of arguments passed to the program.

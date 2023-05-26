@@ -5,6 +5,36 @@
 #include <stdbool.h>
 #include <SDL2/SDL_image.h>
 
+// Screen dimensions
+// Might be changable later
+const int SCREEN_WIDTH = 640;
+const int SCREEN_HEIGHT = 480;
+
+// Function prototypes
+bool Init()
+
+bool LoadMedia();
+
+void CloseWindow();
+
+SDL_Surface* LoadSurface(char* path);
+
+void CheckArgNum(int argc, int requiredArgs)
+
+char** Tokenize(char* string, int stringLen)
+    
+
+// Global variables
+
+// The window that we render to
+SDL_Surface* gWindow = NULL;
+
+// The surface contained by the window
+SDL_Surface* gScreenSurface = NULL;
+
+// The current displayed PNG image
+SDL_Surface* gPNGSurface = NULL;
+
 #define DEBUG
 
 /*

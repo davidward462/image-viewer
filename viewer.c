@@ -14,6 +14,8 @@ const int SCREEN_HEIGHT = 480;
 // Function prototypes
 void ShowError(char* msg);
 
+bool CreateWindow();
+
 bool Init();
 
 bool LoadMedia();
@@ -43,6 +45,21 @@ void ShowError(char* msg)
     fprintf(stderr, "%s. Error: %s\n", msg, SDL_GetError() );
 }
 
+bool CreateWindow()
+{
+    bool success = true;
+        // create window
+        gWindow = SDL_CreateWindow("Image viewer", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+
+        if(gWindow == NULL)
+        {
+            // error
+            ShowError("Window could not be created");
+            success = false;
+        }
+    return success;
+}
+
 bool Init()
 {
     bool success = true;
@@ -54,22 +71,9 @@ bool Init()
         ShowError("SDL failed to initialize");
         success = false;
     }
-    else
+    else // success
     {
-        // create window
-        gWindow = SDL_CreateWindow("Image viewer", SDL_WINDOWPOS_UNDEFINED, SDLWINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
-
-        if(gWindow == NULL)
-        {
-            // error
-            ShowError("Window could not be created");
-            success = false;
-        }
-        else
-        {
-
-        }
-
+        bool windowCreated = CreateWindow();
     }
 
 

@@ -88,6 +88,22 @@ bool Init(char* filetype)
             printf("type is bmp\n");
 #endif
         }
+        else if( strcmp(filetype, "png") == 0)
+        {
+#ifdef DEBUG
+            printf("type is png\n");
+#endif
+        }
+        else if( strcmp(filetype, "jpg") == 0)
+        {
+#ifdef DEBUG
+            printf("type is jpg\n");
+#endif
+        }
+        else
+        {
+            ShowError("Unknown type.\n");
+        }
 
     }
 

@@ -12,7 +12,7 @@ const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
 
 // Function prototypes
-void ShowError(char* msg);
+void SDLError(char* msg);
 
 bool CreateWindow();
 
@@ -40,7 +40,10 @@ SDL_Surface* gScreenSurface = NULL;
 // The current displayed PNG image
 SDL_Surface* gPNGSurface = NULL;
 
-void ShowError(char* msg)
+// The current displayed image (if not PNG)
+SDL_Surface* gImageSurface = NULL;
+
+void SDLError(char* msg)
 {
     fprintf(stderr, "%s. Error: %s\n", msg, SDL_GetError() );
 }
@@ -58,7 +61,7 @@ bool CreateWindow()
         if(gWindow == NULL)
         {
             // error
-            ShowError("Window could not be created");
+            SDLError("Window could not be created");
             success = false;
         }
     return success;
@@ -76,33 +79,43 @@ bool Init(char* filetype)
     if( SDL_Init( SDL_INIT_VIDEO ) < 0)
     {
         // error
-        ShowError("SDL failed to initialize");
+        SDLError("SDL failed to initialize");
         success = false;
     }
     else // success
     {
         bool windowCreated = CreateWindow();
-        if( strcmp(filetype, "bmp") == 0)
+        if( strcmp(filetype, "bmp") == 0) // bitmap
         {
 #ifdef DEBUG
             printf("type is bmp\n");
 #endif
+            // get window surface
+            gScreenSurface = SDL_GetWindowSurface( gWindow );
         }
-        else if( strcmp(filetype, "png") == 0)
+        else if( strcmp(filetype, "png") == 0) // png
         {
 #ifdef DEBUG
             printf("type is png\n");
 #endif
         }
-        else if( strcmp(filetype, "jpg") == 0)
+        else if( strcmp(filetype, "jpg") == 0) //jpg
         {
 #ifdef DEBUG
             printf("type is jpg\n");
 #endif
         }
-        else
+        else // error
         {
-            ShowError("Unknown type.\n");
+            if( strcmp( filetype, "") == 0 ) // empty string
+            {
+                SDLError("No filetype detected.\n");
+            }
+            else
+            {
+                SDLError("Filetype not supported.\n");
+            }
+
         }
 
     }

@@ -14,6 +14,8 @@ const int SCREEN_HEIGHT = 480;
 // Function prototypes
 void SDLError(char* msg);
 
+void MyError(char* msg);
+
 bool CreateWindow();
 
 bool Init(char* filetype);
@@ -43,11 +45,32 @@ SDL_Surface* gPNGSurface = NULL;
 // The current displayed image (if not PNG)
 SDL_Surface* gImageSurface = NULL;
 
+/**
+ * Print message to standard error and show SDL error
+ *
+ * @param msg: message to print. Newline not required
+ * @return void
+ */
 void SDLError(char* msg)
 {
     fprintf(stderr, "%s. Error: %s\n", msg, SDL_GetError() );
 }
 
+/**
+ * Print message to standard error with newline
+ *
+ * @param msg: message to print.
+ * @return void
+ */
+void MyError(char* msg)
+{
+    fprintf(stderr, "%s\n");
+}
+
+/**
+ * Create window
+ *
+ */
 bool CreateWindow()
 {
 #ifdef DEBUG
@@ -67,6 +90,10 @@ bool CreateWindow()
     return success;
 }
 
+/** 
+ * Initialize SDL
+ *
+ */
 bool Init(char* filetype)
 {
 #ifdef DEBUG
@@ -123,12 +150,20 @@ bool Init(char* filetype)
     return success;
 }
 
+/**
+ * Load image
+ *
+ */
 bool LoadMedia()
 {
     bool success = false;
     return success;
 }
 
+/**
+ * Close window
+ *
+ */
 void CloseWindow()
 {
     return;

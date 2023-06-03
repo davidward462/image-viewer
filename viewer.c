@@ -150,13 +150,29 @@ bool Init(char* filetype)
     return success;
 }
 
+
+SDL_Surface* LoadSurface(char* path)
+{
+    return NULL;
+}
+
+
 /**
  * Load image
  *
  */
-bool LoadMedia()
+bool LoadMedia(char* path)
 {
     bool success = false;
+
+    gImageSurface = LoadSurface(path);
+
+    if(gImageSurface == NULL)
+    {
+        SDLError("image could not be loaded.");
+        success = false;
+    }
+
     return success;
 }
 

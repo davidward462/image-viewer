@@ -231,7 +231,8 @@ void CloseWindow()
     SDL_FreeSurface(gImageSurface);
     gImageSurface = NULL;
 
-    return;
+    // quit SDL systems
+    SDL_Quit();
 }
 
 /*

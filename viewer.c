@@ -36,7 +36,7 @@ bool LoadMedia();
 
 void CloseWindow();
 
-SDL_Surface* LoadSurface(char* path);
+SDL_Surface* LoadBMPSurface(char* path);
 
 void CheckArgNum(int argc, int requiredArgs);
 
@@ -153,9 +153,9 @@ bool CreateWindow()
  */
 bool Init(char* filetype)
 {
-#ifdef DEBUG
+    #ifdef DEBUG
     printf("run Init(%s)\n", filetype);
-#endif
+    #endif
 
     bool success = true;
 
@@ -168,7 +168,10 @@ bool Init(char* filetype)
     }
     else // success
     {
+
         bool windowCreated = CreateWindow();
+
+        // TODO: init filetype
 
         // temp
         gScreenSurface = SDL_GetWindowSurface( gWindow );
@@ -179,8 +182,11 @@ bool Init(char* filetype)
     return success;
 }
 
-
-SDL_Surface* LoadSurface(char* path)
+/**
+*
+*
+*/
+SDL_Surface* LoadBMPSurface(char* path)
 {
     return NULL;
 }
@@ -194,7 +200,8 @@ bool LoadMedia(char* path)
 {
     bool success = false;
 
-    gImageSurface = LoadSurface(path);
+    // TODO: make this deal with other file types
+    gImageSurface = LoadBMPSurface(path);
 
     if(gImageSurface == NULL)
     {
@@ -251,9 +258,9 @@ char** Tokenize(char* string, int stringLen)
 
 int main(int argc, char **argv)
 {
-#ifdef DEBUG
+    #ifdef DEBUG
     printf("debug mode\n");
-#endif
+    #endif
 
     CheckArgNum(argc, 2);
 
@@ -271,9 +278,9 @@ int main(int argc, char **argv)
     filenameCopy = malloc(stringLen);
     strcpy( filenameCopy, filename);
 
-#ifdef DEBUG
+    #ifdef DEBUG
     printf("opening file: %s\n", filename);
-#endif
+    #endif
     
     // tokenize and store
     char** tokenList = malloc(stringLen * 2);
@@ -286,13 +293,13 @@ int main(int argc, char **argv)
     strcpy(extension, tokenList[1]);
 
 
-#ifdef DEBUG
+    #ifdef DEBUG
     printf("filename: %s\n", name);
     printf("extension: %s\n", extension);
-#endif
+    #endif
 
 
-    Init(tokenList[1]);
+    Init(extension);
 
     // free memory
     free(filename);

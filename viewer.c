@@ -1,3 +1,4 @@
+#include <SDL2/SDL_surface.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -36,7 +37,7 @@ bool LoadMedia();
 
 void CloseWindow();
 
-SDL_Surface* LoadBMPSurface(char* path);
+SDL_Surface* LoadSurface(char* path);
 
 void CheckArgNum(int argc, int requiredArgs);
 
@@ -82,6 +83,12 @@ void MyError(char* msg)
     fprintf(stderr, "%s\n");
 }
 
+/**
+* Get filetype string and set global enum variable
+*
+* @param filetype: type of file input to the program
+* @return void
+*/
 void SetFileType(char* filetype)
 {
     if( strcmp(filetype, "bmp") == 0) // bitmap
@@ -130,9 +137,9 @@ void SetFileType(char* filetype)
  */
 bool CreateWindow()
 {
-#ifdef DEBUG
+    #ifdef DEBUG
     printf("run CreateWindow()\n");
-#endif
+    #endif
 
     bool success = true;
         // create window
@@ -186,7 +193,7 @@ bool Init(char* filetype)
 *
 *
 */
-SDL_Surface* LoadBMPSurface(char* path)
+SDL_Surface* LoadSurface(char* path)
 {
     return NULL;
 }
@@ -198,10 +205,10 @@ SDL_Surface* LoadBMPSurface(char* path)
  */
 bool LoadMedia(char* path)
 {
-    bool success = false;
+    bool success = true;
 
     // TODO: make this deal with other file types
-    gImageSurface = LoadBMPSurface(path);
+    gImageSurface = LoadSurface(path);
 
     if(gImageSurface == NULL)
     {
@@ -218,6 +225,12 @@ bool LoadMedia(char* path)
  */
 void CloseWindow()
 {
+    SDL_FreeSurface(gPNGSurface);
+    gPNGSurface = NULL;
+
+    SDL_FreeSurface(gImageSurface);
+    gImageSurface = NULL;
+
     return;
 }
 

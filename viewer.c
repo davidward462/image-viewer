@@ -11,10 +11,22 @@
 const int SCREEN_WIDTH = 640;
 const int SCREEN_HEIGHT = 480;
 
+enum fileType
+{
+    bmp,
+    png,
+    jpg,
+    none,
+    error,
+};
+
+
 // Function prototypes
 void SDLError(char* msg);
 
 void MyError(char* msg);
+
+void SetFileType(char* type);
 
 bool CreateWindow();
 
@@ -32,6 +44,9 @@ char** Tokenize(char* string, int stringLen);
     
 
 // Global variables
+
+// type of file read
+enum fileType gCurrentType = none;
 
 // The window that we render to
 SDL_Window* gWindow = NULL;
@@ -65,6 +80,48 @@ void SDLError(char* msg)
 void MyError(char* msg)
 {
     fprintf(stderr, "%s\n");
+}
+
+void SetFileType(char* filetype)
+{
+    if( strcmp(filetype, "bmp") == 0) // bitmap
+    {
+        #ifdef DEBUG
+        printf("type is bmp\n");
+        #endif
+
+        gCurrentType = bmp;
+    }
+    else if( strcmp(filetype, "png") == 0) // png
+    {
+        #ifdef DEBUG
+        printf("type is png\n");
+        #endif
+
+        gCurrentType = png;
+    }
+    else if( strcmp(filetype, "jpg") == 0) //jpg
+    {
+        #ifdef DEBUG
+        printf("type is jpg\n");
+        #endif
+
+        gCurrentType = jpg;
+    }
+    else // error
+    {
+        if( strcmp( filetype, "") == 0 ) // empty string
+        {
+            SDLError("No filetype detected.\n");
+            gCurrentType = none;
+        }
+        else
+        {
+            SDLError("Filetype not supported.\n");
+            gCurrentType = error;
+        }
+
+    }
 }
 
 /**
@@ -112,38 +169,10 @@ bool Init(char* filetype)
     else // success
     {
         bool windowCreated = CreateWindow();
-        if( strcmp(filetype, "bmp") == 0) // bitmap
-        {
-#ifdef DEBUG
-            printf("type is bmp\n");
-#endif
-            // get window surface
-            gScreenSurface = SDL_GetWindowSurface( gWindow );
-        }
-        else if( strcmp(filetype, "png") == 0) // png
-        {
-#ifdef DEBUG
-            printf("type is png\n");
-#endif
-        }
-        else if( strcmp(filetype, "jpg") == 0) //jpg
-        {
-#ifdef DEBUG
-            printf("type is jpg\n");
-#endif
-        }
-        else // error
-        {
-            if( strcmp( filetype, "") == 0 ) // empty string
-            {
-                SDLError("No filetype detected.\n");
-            }
-            else
-            {
-                SDLError("Filetype not supported.\n");
-            }
 
-        }
+        // temp
+        gScreenSurface = SDL_GetWindowSurface( gWindow );
+
 
     }
 
@@ -228,8 +257,11 @@ int main(int argc, char **argv)
 
     CheckArgNum(argc, 2);
 
-    // Store command line argument
     char* filename;
+    char* extension;
+    char* name;
+
+    // Store command line argument
     int stringLen = strlen( argv[1] ) + 1;
     filename = malloc( stringLen );
     strcpy( filename, argv[1] );
@@ -243,12 +275,20 @@ int main(int argc, char **argv)
     printf("opening file: %s\n", filename);
 #endif
     
+    // tokenize and store
     char** tokenList = malloc(stringLen * 2);
     tokenList = Tokenize(filenameCopy, stringLen);
 
+    // copy
+    name = malloc( strlen(tokenList[0]) + 1);
+    extension = malloc( strlen(tokenList[1]) + 1 );
+    strcpy(name, tokenList[0]);
+    strcpy(extension, tokenList[1]);
+
+
 #ifdef DEBUG
-    printf("filename: %s\n", tokenList[0]);
-    printf("extension: %s\n", tokenList[1]);
+    printf("filename: %s\n", name);
+    printf("extension: %s\n", extension);
 #endif
 
 

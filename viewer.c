@@ -57,9 +57,6 @@ SDL_Window* gWindow = NULL;
 // The surface contained by the window
 SDL_Surface* gScreenSurface = NULL;
 
-// The current displayed PNG image
-SDL_Surface* gPNGSurface = NULL;
-
 // The current displayed image (if not PNG)
 SDL_Surface* gImageSurface = NULL;
 
@@ -139,10 +136,6 @@ void SetFileType(char* filetype)
  */
 bool CreateWindow()
 {
-    #ifdef DEBUG
-    printf("run CreateWindow()\n");
-    #endif
-
     bool success = true;
         // create window
         gWindow = SDL_CreateWindow("Image viewer", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
@@ -162,10 +155,6 @@ bool CreateWindow()
  */
 bool Init(char* filetype)
 {
-    #ifdef DEBUG
-    printf("run Init(%s)\n", filetype);
-    #endif
-
     bool success = true;
 
     // initialize SDL
@@ -177,15 +166,14 @@ bool Init(char* filetype)
     }
     else // success
     {
-
         bool windowCreated = CreateWindow();
+        if( windowCreated == false)
+        {
+            MyError("Failed to create window.");
+            success = false;
+        }
 
-        // TODO: init filetype
-
-        // temp
         gScreenSurface = SDL_GetWindowSurface( gWindow );
-
-
     }
 
     return success;
@@ -250,9 +238,6 @@ bool LoadMedia(char* path)
  */
 void CloseWindow()
 {
-    SDL_FreeSurface(gPNGSurface);
-    gPNGSurface = NULL;
-
     SDL_FreeSurface(gImageSurface);
     gImageSurface = NULL;
 
@@ -337,6 +322,7 @@ int main(int argc, char **argv)
     printf("extension: %s\n", extension);
     #endif
 
+    SetFileType(extension);
 
     bool initStatus = Init(extension);
     bool loadMediaStatus;
@@ -386,6 +372,8 @@ int main(int argc, char **argv)
 
     // free memory
     free(filename);
+    free(name);
+    free(extension);
     free(filenameCopy);
     free(tokenList);
 

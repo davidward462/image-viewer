@@ -1,4 +1,6 @@
+#include <SDL2/SDL_events.h>
 #include <SDL2/SDL_surface.h>
+#include <SDL2/SDL_video.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -33,7 +35,7 @@ bool CreateWindow();
 
 bool Init(char* filetype);
 
-bool LoadMedia();
+bool LoadMedia(char* path);
 
 void CloseWindow();
 
@@ -201,7 +203,8 @@ SDL_Surface* LoadSurface(char* path)
 
 /**
  * Load image
- *
+ * @param path: the path of the file, ie the full file name
+ * @return success: true if action succeeded, false otherwise
  */
 bool LoadMedia(char* path)
 {
@@ -313,7 +316,51 @@ int main(int argc, char **argv)
     #endif
 
 
-    Init(extension);
+    bool initStatus = Init(extension);
+    bool loadMediaStatus;
+
+    if( initStatus == false)
+    {
+        MyError("Failed to initialize.\n");
+    }
+    else // initialized successfully
+    {
+        // load media
+        loadMediaStatus = LoadMedia(filename);
+        if( loadMediaStatus == false)
+        {
+            MyError("Failed to load media.\n");
+        }
+        else // successful
+        {
+            // main loop
+            
+            // flag
+            bool quit = false;
+
+            // event handler
+            SDL_Event e;
+
+            //while running
+            while( quit == false)
+            {
+                // check event queue
+                while( SDL_PollEvent( &e ) != 0 )
+                {
+                    // user tries to quit
+                    if( e.type == SDL_QUIT )
+                    {
+                        quit = true;
+                    }
+                }
+
+                SDL_BlitSurface(gImageSurface, NULL, gScreenSurface, NULL);
+
+                // update window
+                SDL_UpdateWindowSurface(gWindow);
+            }
+        }
+    }
 
     // free memory
     free(filename);

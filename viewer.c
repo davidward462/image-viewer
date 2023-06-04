@@ -197,6 +197,28 @@ bool Init(char* filetype)
 */
 SDL_Surface* LoadSurface(char* path)
 {
+    //The final optimized image
+	SDL_Surface* optimizedSurface = NULL;
+
+    // load file from path
+    SDL_Surface* loadedSurface = IMG_Load(path);
+
+    // check loaded surface
+    if( loadedSurface == NULL)
+    {
+        SDLError("Unable to load image.");
+    }
+
+    // convert to screen format
+    optimizedSurface = SDL_ConvertSurface( loadedSurface, gScreenSurface->format, 0 );
+    if( optimizedSurface == NULL)
+    {
+        SDLError("Unable to optimize image.");
+    }
+
+    // free old loaded surface
+    SDL_FreeSurface(loadedSurface);
+
     return NULL;
 }
 

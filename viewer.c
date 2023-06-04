@@ -362,7 +362,15 @@ int main(int argc, char **argv)
                     }
                 }
 
-                SDL_BlitSurface(gImageSurface, NULL, gScreenSurface, NULL);
+                //SDL_BlitSurface(gImageSurface, NULL, gScreenSurface, NULL);
+
+                //Apply the image stretched
+				SDL_Rect stretchRect;
+				stretchRect.x = 0;
+				stretchRect.y = 0;
+				stretchRect.w = SCREEN_WIDTH;
+				stretchRect.h = SCREEN_HEIGHT;
+				SDL_BlitScaled( gImageSurface, NULL, gScreenSurface, &stretchRect );
 
                 // update window
                 SDL_UpdateWindowSurface(gWindow);

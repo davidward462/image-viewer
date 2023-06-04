@@ -219,7 +219,7 @@ SDL_Surface* LoadSurface(char* path)
     // free old loaded surface
     SDL_FreeSurface(loadedSurface);
 
-    return NULL;
+    return optimizedSurface;
 }
 
 
@@ -237,11 +237,11 @@ bool LoadMedia(char* path)
 
     if(gImageSurface == NULL)
     {
-        SDLError("image could not be loaded.");
+        SDLError("Image could not be loaded.");
         success = false;
     }
 
-    return success;
+    return success;SDL_Surface *surface;
 }
 
 /**

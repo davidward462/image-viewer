@@ -9,10 +9,6 @@
 #include <SDL2/SDL_image.h>
 #define DEBUG
 
-// Screen dimensions
-// Might be changable later
-const int SCREEN_WIDTH = 640;
-const int SCREEN_HEIGHT = 480;
 
 enum fileType
 {
@@ -47,6 +43,12 @@ char** Tokenize(char* string, int stringLen);
     
 
 // Global variables
+
+// Screen dimensions
+
+// Dynamic global height
+int gScreenWidth = 800;
+int gScreenHeight = 600;
 
 // type of file read
 enum fileType gCurrentType = none;
@@ -138,7 +140,7 @@ bool CreateWindow()
 {
     bool success = true;
         // create window
-        gWindow = SDL_CreateWindow("Image viewer", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+        gWindow = SDL_CreateWindow("Image viewer", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, gScreenWidth, gScreenHeight, SDL_WINDOW_SHOWN);
 
         if(gWindow == NULL)
         {
@@ -229,7 +231,7 @@ bool LoadMedia(char* path)
         success = false;
     }
 
-    return success;SDL_Surface *surface;
+    return success;
 }
 
 /**
@@ -362,14 +364,13 @@ int main(int argc, char **argv)
                     }
                 }
 
-                //SDL_BlitSurface(gImageSurface, NULL, gScreenSurface, NULL);
-
                 //Apply the image stretched
 				SDL_Rect stretchRect;
 				stretchRect.x = 0;
 				stretchRect.y = 0;
-				stretchRect.w = SCREEN_WIDTH;
-				stretchRect.h = SCREEN_HEIGHT;
+                stretchRect.w = gImageSurface->w;
+                stretchRect.h = gImageSurface->h;
+
 				SDL_BlitScaled( gImageSurface, NULL, gScreenSurface, &stretchRect );
 
                 // update window
